@@ -20,6 +20,6 @@
   "scripts": {
     "start": "npx -y live-server src",
     "prestart": "npm run build",
-    "build": " /opt/wasi-sdk/bin/clang -Wl,--export=malloc -Wl,--allow-undefined -Wl,--import-memory -O3 example.c -o src/example.wasm"
+    "build": " /opt/wasi-sdk/bin/clang -DGLFW_INCLUDE_NONE -Wl,--export=malloc -Wl,--allow-undefined -Wl,--import-memory -O3 example.c -o src/example.wasm"
   }
 }

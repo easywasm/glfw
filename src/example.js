@@ -1,9 +1,8 @@
 // Compile example.wasm first:
-//   /opt/wasi-sdk/bin/clang --target=wasm32-wasip1 -DGLFW_INCLUDE_NONE \
+//   /opt/wasi-sdk/bin/clang -DGLFW_INCLUDE_NONE \
 //     -Wl,--export=malloc -Wl,--allow-undefined -Wl,--import-memory \
 //     -O3 ../example.c -o example.wasm
-//
-// Serve with any static server, e.g.: npx serve .
+
 
 import { Glfw } from './glfw.js'
 

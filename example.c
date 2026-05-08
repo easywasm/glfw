@@ -1,9 +1,6 @@
 // native mac: clang $(pkg-config --cflags --libs glfw3) -isysroot $(xcrun --show-sdk-path) -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo example.c -o example
 // wasi-sdk:  /opt/wasi-sdk/bin/clang --target=wasm32-wasip1 -Wl,--export=malloc -Wl,--allow-undefined -Wl,--import-memory -O3 example.c -o demo/example.wasm
 
-#ifdef __wasm__
-#  define GLFW_INCLUDE_NONE
-#endif
 #include "glfw3.h"
 #include <math.h>
 

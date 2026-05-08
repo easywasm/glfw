@@ -1,0 +1,25 @@
+{
+  "name": "@easywasm/glfw",
+  "version": "0.0.0",
+  "description": "Web host interface exposing GLFW 3.5 to WebAssembly modules compiled with wasi-sdk",
+  "type": "module",
+  "main": "src/glfw.js",
+  "exports": {
+    ".": "./src/glfw.js",
+    "./constants": "./src/constants.js"
+  },
+  "files": [
+    "src/"
+  ],
+  "keywords": ["webassembly", "wasm", "glfw", "wasi", "wasi-sdk", "webgl"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/easywasm/glfw"
+  },
+  "scripts": {
+    "start": "npx -y live-server src",
+    "prestart": "npm run build",
+    "build": " /opt/wasi-sdk/bin/clang -Wl,--export=malloc -Wl,--allow-undefined -Wl,--import-memory -O3 example.c -o src/example.wasm"
+  }
+}

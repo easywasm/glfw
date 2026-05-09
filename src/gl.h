@@ -1,3 +1,5 @@
+// this sets up GL, with everything extern (imported from host)
+
 #ifndef __gles1_gl_h_
 #define __gles1_gl_h_ 1
 

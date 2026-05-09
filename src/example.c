@@ -1,11 +1,9 @@
-// native mac: clang $(pkg-config --cflags --libs glfw3) -isysroot $(xcrun --show-sdk-path) -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo example.c -o example
-// wasi-sdk:  /opt/wasi-sdk/bin/clang --target=wasm32-wasip1 -Wl,--export=malloc -Wl,--allow-undefined -Wl,--import-memory -O3 example.c -o demo/example.wasm
+// this is an exmaple of wasm/native code
 
 #include "glfw3.h"
 #include <math.h>
 
 #ifdef __wasm__
-// GL functions imported from JS host (env namespace)
 void glClearColor(float r, float g, float b, float a);
 void glClear(unsigned int mask);
 #  define GL_COLOR_BUFFER_BIT 0x4000
@@ -25,9 +23,7 @@ static void key_callback(GLFWwindow* w, int key, int scancode, int action, int m
 // On wasm: exported and called each tick by JS requestAnimationFrame.
 // On native: called in the main loop below.
 // Returns 1 to keep going, 0 to stop.
-#ifdef __wasm__
 __attribute__((export_name("frame")))
-#endif
 int frame(void) {
     if (!window || glfwWindowShouldClose(window)) return 0;
 
@@ -57,5 +53,6 @@ int main(void) {
     while (frame()) {}
     glfwTerminate();
 #endif
+
     return 0;
 }

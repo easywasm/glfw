@@ -1,12 +1,11 @@
 {
-  "name": "@easywasm/glfw",
+  "name": "@easywasm/gl",
   "version": "0.0.0",
   "description": "Web host interface exposing GLFW 3.5 to WebAssembly modules compiled with wasi-sdk",
   "type": "module",
-  "main": "src/glfw.js",
+  "main": "web/index.js",
   "exports": {
-    ".": "./src/glfw.js",
-    "./constants": "./src/constants.js"
+    ".": "./web/index.js"
   },
   "files": [
     "src/"
@@ -18,8 +17,9 @@
     "url": "https://github.com/easywasm/glfw"
   },
   "scripts": {
-    "start": "npx -y live-server src",
-    "prestart": "npm run build",
-    "build": " /opt/wasi-sdk/bin/clang -DGLFW_INCLUDE_NONE -Wl,--export=malloc -Wl,--allow-undefined -Wl,--import-memory -O3 example.c -o src/example.wasm"
+    "start": "npx -y live-server web",
+    "prestart": "npm run example:web",
+    "example:web": " /opt/wasi-sdk/bin/clang -DGLFW_INCLUDE_NONE -Wl,--allow-undefined -O3 src/example.c -o web/example.wasm",
+    "example:mac": "clang $(pkg-config --cflags --libs glfw3) -isysroot $(xcrun --show-sdk-path) -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo src/example.c -o example"
   }
 }

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GLFW WASM Demo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #111; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: monospace; color: #aaa; gap: 12px; }
+    canvas { display: block; border: 1px solid #333; }
+    #status { font-size: 13px; }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="640" height="480"></canvas>
+  <div id="status">loading…</div>
+  <script type="importmap">
+  {
+    "imports": {
+      "@easywasm/wasi": "https://esm.sh/@easywasm/wasi",
+      "@easywasm/gl": "./index.js"
+    }
+  }
+</script>
+  <script type="module">
+    import { Glfw, GL} from '@easywasm/gl'
+    import WasiPreview1 from '@easywasm/wasi'
+
+    const status = document.getElementById('status')
+    const canvas = document.getElementById('canvas')
+
+    const glfw = new Glfw({ canvas })
+    const glHost = new GL()
+    const wasi_snapshot_preview1 = new WasiPreview1()
+
+    try {
+      status.textContent = 'fetching wasm…'
+
+      const { instance: { exports } } = await WebAssembly.instantiateStreaming(fetch('example.wasm'), {
+        env: { ...glfw, ...glHost },
+        wasi_snapshot_preview1,
+      })
+
+      glfw.start(exports)
+      glHost.start(exports)
+      wasi_snapshot_preview1.start(exports)
+      glHost.setGL(glfw.getContextGL())
+      status.textContent = 'running — press Escape to close'
+      
+      function loop() {
+        if (exports.frame()) {
+          requestAnimationFrame(loop)
+        } else {
+          status.textContent = 'window closed'
+        }
+      }
+      requestAnimationFrame(loop)
+    } catch (e) {
+      status.textContent = 'error: ' + e.message
+      console.error(e)
+    }
+  </script>
+</body>
+</html>

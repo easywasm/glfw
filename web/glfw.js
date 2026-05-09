@@ -123,10 +123,11 @@ export class Glfw {
     this._monitorsPtr = 0
 
     // Bind all methods so wasm can call them as plain function references
-    for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(this))) {
-      if (key !== 'constructor' && typeof this[key] === 'function') {
-        this[key] = this[key].bind(this)
-      }
+    const proto = Object.getPrototypeOf(this)
+    for (const key of Object.getOwnPropertyNames(proto)) {
+      if (key === 'constructor') continue
+      const desc = Object.getOwnPropertyDescriptor(proto, key)
+      if (typeof desc.value === 'function') this[key] = desc.value.bind(this)
     }
   }
 
@@ -140,9 +141,13 @@ export class Glfw {
     return this._windows.get(this._currentContext)?.gl ?? null
   }
 
-  // Call after instantiation when memory is exported (not imported).
-  // If you pre-create a WebAssembly.Memory and pass it to the constructor
-  // AND to env.memory in the import object, this call is optional.
+  // Call after instantiation with the wasm exports object (mirrors WasiPreview1.start).
+  start(exports) {
+    this._instance = { exports }
+    if (!this._memory && exports.memory) this._memory = exports.memory
+  }
+
+  // Legacy: call with the full WebAssembly.Instance object.
   setInstance(instance) {
     this._instance = instance
     if (!this._memory && instance.exports.memory) {

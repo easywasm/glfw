@@ -1,15 +1,7 @@
 // this is an exmaple of wasm/native code
 
-#include "glfw3.h"
 #include <math.h>
-
-#ifdef __wasm__
-    #include "./gl.h"
-#elif defined(__APPLE__)
-    #include <OpenGL/gl.h>
-#else
-    #include <GL/gl.h>
-#endif
+#include "platform.h"
 
 static GLFWwindow* window = NULL;
 
@@ -18,11 +10,8 @@ static void key_callback(GLFWwindow* w, int key, int scancode, int action, int m
         glfwSetWindowShouldClose(w, GLFW_TRUE);
 }
 
-// On wasm: exported and called each tick by JS requestAnimationFrame.
-// On native: called in the main loop below.
-// Returns 1 to keep going, 0 to stop.
-__attribute__((export_name("frame")))
-int frame(void) {
+// return "keep going"
+int update() {
     if (!window || glfwWindowShouldClose(window)) return 0;
 
     float t = (float)glfwGetTime();
@@ -38,7 +27,8 @@ int frame(void) {
     return 1;
 }
 
-int main(void) {
+// return exit-status
+int setup() {
     if (!glfwInit()) return -1;
 
     window = glfwCreateWindow(640, 480, "GLFW Demo", NULL, NULL);
@@ -46,11 +36,6 @@ int main(void) {
 
     glfwMakeContextCurrent(window);
     glfwSetKeyCallback(window, key_callback);
-
-#ifndef __wasm__
-    while (frame()) {}
-    glfwTerminate();
-#endif
 
     return 0;
 }

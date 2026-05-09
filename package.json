@@ -1,6 +1,6 @@
 {
   "name": "@easywasm/gl",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Web host interface exposing GLFW 3.5 to WebAssembly modules compiled with wasi-sdk",
   "type": "module",
   "main": "web/index.js",
@@ -10,7 +10,14 @@
   "files": [
     "src/"
   ],
-  "keywords": ["webassembly", "wasm", "glfw", "wasi", "wasi-sdk", "webgl"],
+  "keywords": [
+    "webassembly",
+    "wasm",
+    "glfw",
+    "wasi",
+    "wasi-sdk",
+    "webgl"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -1,6 +1,7 @@
 // this sets up GLFW/GL for native or wasm
 
 #include "glfw3.h"
+
 #ifdef __wasm__
     #include "gl.h"
 #elif defined(__APPLE__)

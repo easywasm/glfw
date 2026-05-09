@@ -29,7 +29,7 @@
   "scripts": {
     "start": "npx -y live-server web",
     "prestart": "npm run example:web",
-    "example:web": " /opt/wasi-sdk/bin/clang -Wl,--export=update -DGLFW_INCLUDE_NONE -Wl,--allow-undefined -O3 src/example.c -o web/example.wasm",
-    "example:mac": "clang $(pkg-config --cflags --libs glfw3) -isysroot $(xcrun --show-sdk-path) -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo src/example.c -o example"
+    "example:web": " /opt/wasi-sdk/bin/clang -O3 -ffast-math -Wl,--export=update -DGLFW_INCLUDE_NONE -Wl,--allow-undefined src/example.c -o web/example.wasm",
+    "example:mac": "clang -O3 -ffast-math $(pkg-config --cflags --libs glfw3) -isysroot $(xcrun --show-sdk-path) -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo src/example.c -o example"
   }
 }

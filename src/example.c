@@ -4,13 +4,11 @@
 #include <math.h>
 
 #ifdef __wasm__
-void glClearColor(float r, float g, float b, float a);
-void glClear(unsigned int mask);
-#  define GL_COLOR_BUFFER_BIT 0x4000
+    #include "./gl.h"
 #elif defined(__APPLE__)
-#  include <OpenGL/gl.h>
+    #include <OpenGL/gl.h>
 #else
-#  include <GL/gl.h>
+    #include <GL/gl.h>
 #endif
 
 static GLFWwindow* window = NULL;
